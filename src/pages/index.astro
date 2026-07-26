@@ -1,0 +1,138 @@
+---
+import Base from '../layouts/Base.astro';
+import BandSection from '../components/BandSection.astro';
+import MediaSection from '../components/MediaSection.astro';
+import ContactSection from '../components/ContactSection.astro';
+import { site, aboutCopy } from '../data/site';
+import { socialLinks } from '../data/media';
+
+const musicGroupSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'MusicGroup',
+  name: site.name,
+  description: site.description,
+  genre: ['Ukrainian folk', 'Party band', 'Pop covers'],
+  foundingDate: String(site.foundingYear),
+  url: site.canonical,
+  email: site.email,
+  telephone: site.phone,
+  areaServed: 'Winnipeg, Manitoba, Canada',
+  sameAs: [socialLinks.youtube, socialLinks.instagram, socialLinks.facebook],
+};
+---
+<Base title="Budmo — Lit Ukrainian Party Band" description={site.description}>
+
+<script type="application/ld+json" set:html={JSON.stringify(musicGroupSchema)} />
+
+<section id="home" class="hero section--slice-bottom">
+  <div class="container hero__inner">
+    <h1 class="hero__headline"><span class="hero__accent">Lit</span> Ukrainian Party Band. The People's Choice.</h1>
+    <a href="/book" class="page-cta-btn hero__cta">Book Now</a>
+  </div>
+</section>
+
+<section id="about" class="about section--after-slice">
+  <div class="container about__inner">
+    <div class="about__text">
+      <span class="section-label">In the beginning</span>
+      <h2 class="section-title">About Budmo</h2>
+      <div class="about__copy">
+        {aboutCopy.map(p => <p>{p}</p>)}
+      </div>
+    </div>
+    <img
+      class="about__map"
+      src="/optimized/misc/manitoba-map-tinted.webp"
+      alt="Map of Manitoba with Winnipeg marked"
+      width="220"
+      height="339"
+      loading="lazy"
+    />
+  </div>
+</section>
+
+<BandSection />
+
+<MediaSection />
+
+<ContactSection />
+
+</Base>
+
+<style>
+  .hero {
+    background: var(--ink);
+    background-image:
+      linear-gradient(rgba(26,26,26,0.72), rgba(26,26,26,0.86)),
+      url('/optimized/hero/hero.webp');
+    background-size: cover;
+    background-position: center;
+    min-height: 85vh;
+    display: flex;
+    align-items: center;
+  }
+  .hero__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 28px;
+    padding-top: 60px;
+    padding-bottom: 60px;
+  }
+  .hero__headline {
+    font-family: var(--font-display);
+    font-size: var(--text-4xl);
+    color: var(--text-inverse);
+    max-width: 900px;
+    line-height: 1.05;
+  }
+  .hero__accent {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-color: var(--accent);
+    text-underline-offset: 6px;
+  }
+  .hero__cta {
+    margin-top: 8px;
+  }
+
+  @media (max-width: 600px) {
+    .hero { min-height: 90vh; }
+  }
+
+  /* ── About ───────────────────────────────────────────────── */
+  .about__inner {
+    display: grid;
+    grid-template-columns: 1.4fr auto;
+    gap: 48px;
+    align-items: start;
+  }
+  .about__text {
+    max-width: 640px;
+  }
+  .about__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    color: var(--text);
+    font-size: var(--text-md);
+    line-height: 1.7;
+  }
+  .about__map {
+    width: 160px;
+    height: auto;
+    justify-self: center;
+    margin-top: 8px;
+  }
+
+  @media (max-width: 900px) {
+    .about__inner {
+      grid-template-columns: 1fr;
+    }
+    .about__map {
+      order: -1;
+      width: 120px;
+    }
+  }
+</style>

@@ -1,0 +1,89 @@
+---
+const links = [
+  { href: '/#about',    label: 'About' },
+  { href: '/#theband',  label: 'The Band' },
+  { href: '/#media',    label: 'Media' },
+  { href: '/#contact',  label: 'Contact' },
+];
+---
+
+<header class="site-nav">
+  <div class="container site-nav__inner">
+    <a href="/" class="site-nav__logo" aria-label="Budmo — home">
+      <img src="/optimized/logo/wordmark-black.webp" alt="Budmo" width="120" height="59" />
+    </a>
+
+    <nav class="site-nav__links" aria-label="Site navigation">
+      <a href="/">Home</a>
+      {links.map(link => (
+        <a href={link.href}>{link.label}</a>
+      ))}
+    </nav>
+
+    <a href="/book" class="site-nav__book">Book</a>
+  </div>
+</header>
+
+<style>
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 500;
+    background: var(--header-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .site-nav__inner {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+
+  .site-nav__logo img {
+    height: 32px;
+    width: auto;
+  }
+
+  .site-nav__links {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    margin-left: auto;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: 0.04em;
+  }
+  .site-nav__links a {
+    color: var(--text);
+    transition: color var(--ease);
+  }
+  .site-nav__links a:hover { color: var(--accent-text); }
+
+  .site-nav__book {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: 0.04em;
+    background: var(--white);
+    color: var(--ink);
+    border: 1px solid var(--ink);
+    padding: 8px 22px;
+    border-radius: var(--radius-full);
+    transition: background var(--ease), color var(--ease);
+  }
+  .site-nav__book:hover {
+    background: var(--ink);
+    color: var(--text-inverse);
+  }
+
+  /* ── Mobile: single-page scroll site, so the anchor links just add
+     noise — visitors scroll instead of jumping via nav. Logo + Book
+     CTA are enough. Desktop nav treatment is being revisited separately. ── */
+  @media (max-width: 900px) {
+    .site-nav__links { display: none; }
+    .site-nav__book { margin-left: auto; }
+  }
+</style>

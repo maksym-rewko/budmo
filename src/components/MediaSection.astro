@@ -1,0 +1,152 @@
+---
+import { videos, socialLinks } from '../data/media';
+import { srcset800 } from '../lib/responsive';
+
+const galleryPhotos = Array.from({ length: 8 }, (_, i) => `/optimized/gallery/photo-${i + 1}.webp`);
+---
+<section id="media" class="media">
+  <div class="container">
+    <span class="section-label">Watch &amp; follow</span>
+    <h2 class="section-title">Watch us on YouTube&hellip; follow us on Instagram &amp; Facebook</h2>
+
+    <ul class="media__videos">
+      {videos.map(video => (
+        <li class="media__video-facade" data-youtube-id={video.youtubeId}>
+          <img src={video.poster} alt={video.title} loading="lazy" width="1600" height="900" />
+          <button type="button" class="media__play" aria-label={`Play: ${video.title}`}>
+            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+          </button>
+        </li>
+      ))}
+    </ul>
+
+    <ul class="media__gallery" aria-label="Photos from Budmo performances">
+      {galleryPhotos.map((photo, i) => (
+        <li>
+          <img
+            src={photo}
+            srcset={srcset800(photo)}
+            sizes="280px"
+            alt={`Budmo performing live, photo ${i + 1}`}
+            loading="lazy"
+            width="280"
+            height="210"
+          />
+        </li>
+      ))}
+    </ul>
+
+    <nav class="media__social" aria-label="Social links">
+      <a href={socialLinks.youtube} target="_blank" rel="noopener" class="media__social-link">YouTube</a>
+      <a href={socialLinks.instagram} target="_blank" rel="noopener" class="media__social-link">Instagram</a>
+      <a href={socialLinks.facebook} target="_blank" rel="noopener" class="media__social-link">Facebook</a>
+    </nav>
+  </div>
+</section>
+
+<style>
+  .media__videos {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px;
+    list-style: none;
+    margin-bottom: 40px;
+  }
+
+  .media__video-facade {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .media__video-facade img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .media__video-facade iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+
+  .media__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    background: rgba(26, 26, 26, 0.75);
+    color: var(--text-inverse);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--ease), transform var(--ease);
+  }
+  .media__play:hover {
+    background: var(--accent-dark);
+    transform: scale(1.06);
+  }
+
+  /* Horizontal scroll-snap strip, contained within the page margins. */
+  .media__gallery {
+    display: flex;
+    gap: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    list-style: none;
+    margin: 0 0 40px;
+    padding: 0 0 8px;
+  }
+  .media__gallery li {
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+  }
+  .media__gallery img {
+    width: 280px;
+    height: 210px;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+  }
+
+  .media__social {
+    display: flex;
+    gap: 28px;
+  }
+  .media__social-link {
+    font-family: var(--font-display);
+    font-size: var(--text-md);
+    letter-spacing: 0.04em;
+    color: var(--text);
+    transition: color var(--ease);
+  }
+  .media__social-link:hover { color: var(--accent-text); }
+
+  @media (max-width: 700px) {
+    .media__videos { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script is:inline>
+(function () {
+  document.querySelectorAll('.media__video-facade').forEach(function (facade) {
+    var button = facade.querySelector('.media__play');
+    if (!button) return;
+    button.addEventListener('click', function () {
+      var id = facade.getAttribute('data-youtube-id');
+      var iframe = document.createElement('iframe');
+      iframe.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1';
+      iframe.title = 'YouTube video player';
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+      iframe.allowFullscreen = true;
+      facade.innerHTML = '';
+      facade.appendChild(iframe);
+    });
+  });
+})();
+</script>

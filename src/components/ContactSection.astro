@@ -1,0 +1,196 @@
+---
+import { site } from '../data/site';
+---
+<section id="contact" class="contact section--surface">
+  <div class="container contact__grid">
+
+    <div class="contact__intro">
+      <span class="section-label">Get in touch</span>
+      <h2 class="section-title">Let's Talk</h2>
+      <p class="contact__detail">E - <a href={`mailto:${site.email}`}>{site.email}</a></p>
+      <p class="contact__detail">P - <a href={site.phoneHref}>{site.phone}</a></p>
+    </div>
+
+    <form
+      class="contact__form"
+      id="contact-form"
+      name="contact"
+      method="POST"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <p class="sr-only"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+      <div class="contact__row">
+        <div class="contact__field">
+          <label for="cf-first-name">First Name</label>
+          <input type="text" id="cf-first-name" name="first-name" autocomplete="given-name" required />
+        </div>
+        <div class="contact__field">
+          <label for="cf-last-name">Last Name</label>
+          <input type="text" id="cf-last-name" name="last-name" autocomplete="family-name" required />
+        </div>
+      </div>
+
+      <div class="contact__field">
+        <label for="cf-email">Email</label>
+        <input type="email" id="cf-email" name="email" autocomplete="email" required />
+      </div>
+
+      <div class="contact__field">
+        <label for="cf-message">Message</label>
+        <textarea id="cf-message" name="message" required></textarea>
+      </div>
+
+      <div class="contact__status" id="cf-status" role="status" aria-live="polite"></div>
+
+      <button type="submit" class="page-cta-btn contact__submit" id="cf-submit">
+        Submit
+      </button>
+
+      <p class="contact__privacy">We'll only use this to get back to you about your message — never shared with anyone else.</p>
+    </form>
+
+  </div>
+</section>
+
+<style>
+  .contact__grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: 64px;
+    align-items: start;
+  }
+
+  .contact__detail {
+    font-size: var(--text-md);
+    margin-top: 12px;
+  }
+  .contact__detail a { color: var(--accent-text); }
+  .contact__detail a:hover { color: var(--accent-text-hover); }
+
+  .contact__form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .contact__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+  }
+
+  .contact__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .contact__field label {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .contact__field input,
+  .contact__field textarea {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--input-text);
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    outline: none;
+    width: 100%;
+  }
+  .contact__field input:focus,
+  .contact__field textarea:focus {
+    background: var(--input-focus-bg);
+    border-color: var(--text-muted);
+  }
+  .contact__field textarea {
+    resize: vertical;
+    min-height: 120px;
+  }
+
+  .contact__submit {
+    align-self: flex-start;
+    background: var(--ink);
+    color: var(--text-inverse);
+    border: none;
+    cursor: pointer;
+    font-size: var(--text-sm);
+  }
+  .contact__submit:hover { opacity: 0.85; }
+  .contact__submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  .contact__privacy {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .contact__status {
+    font-size: 13px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    display: none;
+    line-height: 1.5;
+  }
+  .contact__status--success {
+    display: block;
+    background: var(--status-success-bg);
+    border: 1px solid var(--status-success-border);
+    color: var(--status-success-text);
+  }
+  .contact__status--error {
+    display: block;
+    background: var(--status-error-bg);
+    border: 1px solid var(--status-error-border);
+    color: var(--status-error-text);
+  }
+
+  @media (max-width: 800px) {
+    .contact__grid { grid-template-columns: 1fr; gap: 36px; }
+    .contact__row { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script is:inline>
+(function () {
+  var form   = document.getElementById('contact-form');
+  var status = document.getElementById('cf-status');
+  var submit = document.getElementById('cf-submit');
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    submit.disabled = true;
+    submit.textContent = 'Sending…';
+    status.className = 'contact__status';
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString(),
+    }).then(function (res) {
+      if (res.ok) {
+        status.textContent = "Success: Message sent — we'll be in touch soon.";
+        status.className = 'contact__status contact__status--success';
+        form.reset();
+      } else {
+        status.textContent = 'Error: Something went wrong. Please try again.';
+        status.className = 'contact__status contact__status--error';
+      }
+    }).catch(function () {
+      status.textContent = 'Error: Something went wrong. Please try again.';
+      status.className = 'contact__status contact__status--error';
+    }).finally(function () {
+      submit.disabled = false;
+      submit.textContent = 'Submit';
+    });
+  });
+})();
+</script>

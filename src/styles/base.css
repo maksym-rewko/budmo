@@ -1,0 +1,209 @@
+/* ── Global base styles ───────────────────────────────────── */
+
+/* Self-hosted — the real Mistral (Roger Excoffon, 1953), not a Google Fonts stand-in. */
+@font-face {
+  font-family: 'Mistral';
+  src: url('/fonts/MistralStd.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+* { -webkit-tap-highlight-color: transparent; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  color: var(--text);
+  background: var(--bg-page);
+  font-weight: var(--fw-regular);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+img { display: block; max-width: 100%; }
+a   { color: inherit; text-decoration: none; }
+
+/* ── Mobile type minimums (14px floor) ───────────────────── */
+@media (max-width: 767px) {
+  :root {
+    --text-xs: 14px;
+    --text-sm: 14px;
+  }
+}
+
+/* ── Headings ────────────────────────────────────────────── */
+h1, h2, h3, h4, h5 {
+  font-family: var(--font-display);
+  color: var(--text-heading);
+  letter-spacing: 0.01em;
+}
+h1 { font-size: var(--text-3xl); font-weight: var(--fw-bold); line-height: 1.05; }
+h2 { font-size: var(--text-2xl); font-weight: var(--fw-bold); line-height: 1.15; }
+h3 { font-size: var(--text-xl);  font-weight: var(--fw-bold); line-height: 1.25; }
+h4 { font-size: var(--text-lg);  font-weight: var(--fw-semibold); line-height: 1.3;  }
+h5 { font-size: var(--text-md);  font-weight: var(--fw-semibold); line-height: 1.4;  }
+
+/* Hero/display heading — apply explicitly where a larger-than-h1 size is needed */
+.display-heading { font-size: var(--text-4xl); line-height: 1.0; letter-spacing: 0.01em; }
+
+/* ── Focus ring ──────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 3px;
+}
+:focus:not(:focus-visible) { outline: none; }
+
+/* ── Layout helpers ──────────────────────────────────────── */
+.container {
+  max-width: var(--max-w);
+  margin: 0 auto;
+  padding: 0 5vw;
+}
+
+section { padding: 80px 0; }
+section:last-of-type { padding-bottom: 100px; }
+
+/* Anchor-link targets clear the sticky header (replaces the old Squarespace :target hack) */
+section[id] {
+  scroll-margin-top: 90px;
+}
+
+.section-label {
+  display: block;
+  font-family: var(--font-script);
+  font-size: 18px;
+  line-height: 1;
+  color: var(--accent-text);
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: clamp(28px, 4vw, 44px);
+  color: var(--text-heading);
+  margin-bottom: 48px;
+}
+
+/* ── Shared CTA utilities ────────────────────────────────── */
+
+/* Dark-section heading (used in hero + bottom CTA) */
+.page-cta-heading {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: var(--fw-bold);
+  color: var(--text-inverse);
+  line-height: 1.15;
+  margin-bottom: 20px;
+}
+
+/* Pill button used in dark CTA sections */
+.page-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--text-inverse);
+  color: var(--ink);
+  font-family: var(--font-display);
+  font-size: var(--text-sm);
+  letter-spacing: 0.04em;
+  padding: 14px 28px;
+  border-radius: var(--radius-full);
+  text-decoration: none;
+  transition: opacity var(--ease);
+}
+.page-cta-btn:hover { opacity: 0.85; }
+
+/* Responsive 3-column grid — collapses to 1 col on mobile */
+.grid-3col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  column-gap: 20px;
+  row-gap:    0;
+}
+@media (max-width: 767px) {
+  .grid-3col { grid-template-columns: 1fr; }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 1023px) {
+  section { padding: 56px 0; }
+}
+
+@media (max-width: 600px) {
+  body { font-size: 14px; }
+  section { padding: 40px 0; }
+  section:last-of-type { padding-bottom: 80px; }
+  .section-title { font-size: clamp(22px, 6vw, 32px); margin-bottom: 32px; }
+  .container { padding: 0 20px; }
+}
+
+/* ── Reduced motion ──────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+
+/* ── Section separation utilities ───────────────────────── */
+
+/* Alternate surface tint for mid-page rhythm */
+.section--surface {
+  background: var(--bg-surface);
+}
+
+/* Dark section's bottom is sliced diagonally — bleeds into the next section */
+.section--slice-bottom {
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 4vw), 0 100%);
+  padding-bottom: calc(72px + 4vw) !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Light/surface section immediately after a slice-bottom dark section */
+.section--after-slice {
+  margin-top: -4vw;
+  padding-top: calc(80px + 4vw) !important;
+  position: relative;
+}
+
+/* Dark CTA section with a diagonal top edge entering from light */
+.section--slice-top {
+  clip-path: polygon(0 4vw, 100% 0, 100% 100%, 0 100%);
+  margin-top: -4vw;
+  padding-top: calc(80px + 4vw) !important;
+  position: relative;
+  z-index: 1;
+}
+
+/* Responsive padding adjustments for slice utilities */
+@media (max-width: 1023px) {
+  .section--slice-bottom { padding-bottom: calc(56px + 4vw) !important; }
+  .section--after-slice  { padding-top:    calc(56px + 4vw) !important; }
+  .section--slice-top    { padding-top:    calc(56px + 4vw) !important; }
+}
+@media (max-width: 600px) {
+  .section--slice-bottom { padding-bottom: calc(40px + 4vw) !important; }
+  .section--after-slice  { padding-top:    calc(40px + 4vw) !important; }
+  .section--slice-top    { padding-top:    calc(40px + 4vw) !important; }
+}
+
+/* ── Accessibility utilities ─────────────────────────────── */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}

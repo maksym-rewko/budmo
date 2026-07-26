@@ -1,0 +1,96 @@
+---
+import { bandMembers } from '../data/band';
+import { srcset800 } from '../lib/responsive';
+---
+<section id="theband" class="band section--surface">
+  <div class="container">
+    <span class="section-label">Meet the band</span>
+    <h2 class="section-title">The 5 Band Members</h2>
+    <p class="band__intro">
+      These experienced musicians bring a diverse background in many genres and can perform
+      virtually any style of music requested, all leading to a fantastic product.
+    </p>
+
+    <ul class="band__grid">
+      {bandMembers.map(member => (
+        <li class="band__card">
+          <img
+            src={member.photo}
+            srcset={srcset800(member.photo)}
+            sizes="(max-width: 600px) 45vw, 220px"
+            alt={member.alt}
+            width="220"
+            height="330"
+            loading="lazy"
+          />
+          <h3 class="band__name">{member.name}</h3>
+          <p class="band__instrument">{member.instrument}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .band__intro {
+    max-width: 640px;
+    color: var(--text-muted);
+    font-size: var(--text-md);
+    margin-top: -24px;
+    margin-bottom: 48px;
+  }
+
+  .band__grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 24px;
+    list-style: none;
+  }
+
+  .band__card {
+    text-align: center;
+  }
+  .band__card img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: var(--radius-md);
+    margin-bottom: 16px;
+    background: var(--bg-card);
+  }
+  .band__name {
+    font-size: var(--text-lg);
+    margin-bottom: 4px;
+  }
+  .band__instrument {
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: 0.04em;
+    color: var(--accent-text);
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 900px) {
+    .band__grid { grid-template-columns: repeat(3, 1fr); }
+  }
+
+  /* Mobile: swipeable carousel instead of a cramped grid — same scroll-snap
+     technique as .media__gallery in MediaSection.astro. */
+  @media (max-width: 600px) {
+    .band__intro { margin-top: 0; }
+
+    .band__grid {
+      display: flex;
+      grid-template-columns: unset;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      gap: 16px;
+      margin: 0 calc(-50vw + 50%) 8px;
+      padding: 0 5vw 8px;
+    }
+    .band__card {
+      flex: 0 0 62%;
+      scroll-snap-align: start;
+    }
+  }
+</style>

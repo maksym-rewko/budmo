@@ -1,0 +1,23 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+.astro/
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+
+# OS / editor cruft
+.DS_Store
+*.log
+npm-debug.log*
+
+# Temp
+/tmp/
+*.tmp
+
+# Raw archived source images (unprocessed) — not shipped, only public/optimized/ is
+source-assets/

@@ -1,0 +1,100 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base
+  title="404 · Page Not Found · Budmo"
+  description="The page you were looking for doesn't exist."
+>
+
+<section class="e404">
+  <div class="container">
+    <div class="e404-code" aria-hidden="true">404</div>
+    <h1 class="e404-heading">Page not found</h1>
+    <p class="e404-body">The page you were looking for doesn't exist or may have moved. Head back home or get in touch if you'd like to book us.</p>
+    <div class="e404-actions">
+      <a href="/" class="e404-btn e404-btn--primary">Back to home</a>
+      <a href="/book" class="e404-btn e404-btn--ghost">Book Budmo</a>
+    </div>
+  </div>
+</section>
+
+</Base>
+
+<style>
+  .e404 {
+    background: var(--ink);
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 80px 0 120px;
+  }
+
+  .e404-code {
+    font-family: var(--font-display);
+    font-size: clamp(96px, 16vw, 180px);
+    color: var(--text-inverse);
+    line-height: 1;
+    opacity: 0.12;
+    margin-bottom: -0.18em;
+    user-select: none;
+  }
+
+  .e404-heading {
+    font-family: var(--font-display);
+    font-size: clamp(24px, 4vw, 40px);
+    color: var(--text-inverse);
+    line-height: 1.1;
+    margin-bottom: 16px;
+  }
+
+  .e404-body {
+    font-size: var(--text-md);
+    color: rgba(255,255,255,0.60);
+    line-height: 1.65;
+    max-width: 420px;
+    margin-bottom: 48px;
+  }
+
+  .e404-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .e404-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--font-display);
+    font-size: var(--text-sm);
+    letter-spacing: 0.03em;
+    padding: 13px 24px;
+    border-radius: var(--radius-full);
+    text-decoration: none;
+    transition: opacity var(--ease);
+  }
+  .e404-btn:hover { opacity: 0.8; }
+
+  .e404-btn--primary {
+    background: var(--text-inverse);
+    color: var(--ink);
+  }
+
+  .e404-btn--ghost {
+    background: transparent;
+    color: rgba(255,255,255,0.70);
+    border: 1px solid rgba(255,255,255,0.20);
+  }
+  .e404-btn--ghost:hover {
+    color: var(--white);
+    border-color: rgba(255,255,255,0.45);
+    opacity: 1;
+  }
+
+  @media (max-width: 600px) {
+    .e404 { padding: 60px 0 100px; }
+    .e404-actions { flex-direction: column; align-items: flex-start; }
+  }
+</style>

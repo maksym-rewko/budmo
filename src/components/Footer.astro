@@ -1,0 +1,83 @@
+---
+import { socialLinks } from '../data/media';
+import { site } from '../data/site';
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="container site-footer__inner">
+
+    <div class="site-footer__brand">
+      <span class="site-footer__name">{site.name}</span>
+      <span class="site-footer__copy">&copy; {year}</span>
+    </div>
+
+    <nav class="site-footer__social" aria-label="Social links">
+      <a href={socialLinks.youtube} target="_blank" rel="noopener" class="site-footer__link">YouTube</a>
+      <a href={socialLinks.instagram} target="_blank" rel="noopener" class="site-footer__link">Instagram</a>
+      <a href={socialLinks.facebook} target="_blank" rel="noopener" class="site-footer__link">Facebook</a>
+      <a href={`mailto:${site.email}`} class="site-footer__link">Email</a>
+    </nav>
+
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background:  var(--ink);
+    padding:     32px 0;
+    padding-bottom: calc(32px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .site-footer__inner {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    gap:             24px;
+  }
+
+  .site-footer__brand {
+    display:     flex;
+    align-items: baseline;
+    gap:         10px;
+  }
+
+  .site-footer__name {
+    font-family:    var(--font-display);
+    font-size:      var(--text-sm);
+    color:          var(--text-inverse);
+    letter-spacing: 0.04em;
+  }
+
+  .site-footer__copy {
+    font-size: var(--text-xs);
+    color:     rgba(255, 255, 255, 0.40);
+  }
+
+  .site-footer__social {
+    display: flex;
+    gap:     28px;
+  }
+
+  .site-footer__link {
+    font-family:     var(--font-display);
+    font-size:       var(--text-xs);
+    color:           rgba(255, 255, 255, 0.60);
+    letter-spacing:  0.06em;
+    text-decoration: none;
+    transition:      color var(--ease);
+  }
+  .site-footer__link:hover {
+    color: var(--text-inverse);
+  }
+
+  @media (max-width: 600px) {
+    .site-footer__inner {
+      flex-direction: column;
+      align-items:    flex-start;
+      gap:            20px;
+    }
+    .site-footer__social { gap: 20px; flex-wrap: wrap; }
+  }
+</style>

@@ -1,0 +1,71 @@
+---
+/**
+ * Loader: the real logo (same file as the header) fades and scales in,
+ * holds briefly, then fades out to reveal the site. Plays on every page
+ * load. Skipped entirely for prefers-reduced-motion.
+ */
+---
+<div class="loader" id="site-loader" aria-hidden="true">
+  <img class="loader__logo" src="/optimized/logo/wordmark-black.webp" alt="" width="300" height="147" />
+</div>
+
+<style>
+  .loader {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--bg-page);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.4s ease;
+  }
+  .loader.is-hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+  .loader__logo {
+    width: min(300px, 60vw);
+    height: auto;
+    opacity: 0;
+    animation: loaderFadeScale 1.4s ease forwards;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .loader__logo {
+      animation: none;
+    }
+  }
+
+  @keyframes loaderFadeScale {
+    0%   { opacity: 0; transform: scale(0.92); }
+    35%  { opacity: 1; transform: scale(1); }
+    75%  { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(1); }
+  }
+</style>
+
+<script is:inline>
+(function () {
+  var overlay = document.getElementById('site-loader');
+  if (!overlay) return;
+
+  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function remove() {
+    overlay.classList.add('is-hidden');
+    setTimeout(function () {
+      if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+    }, 450);
+  }
+
+  if (reduceMotion) {
+    remove();
+    return;
+  }
+
+  setTimeout(remove, 1400);
+
+  // Safety net: never let a broken animation trap a visitor behind the overlay.
+  setTimeout(remove, 4000);
+})();
+</script>

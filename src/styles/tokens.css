@@ -1,0 +1,132 @@
+/* ── Design tokens — CSS custom properties ───────────────── */
+
+:root {
+  /* ── Font families ──────────────────────────────────── */
+  --font-display: 'Bebas Neue', sans-serif;
+  --font-body:    'Poppins', sans-serif;
+  --font-script:  'Mistral', cursive;
+
+  /* ── Font weights ───────────────────────────────────── */
+  --fw-regular:    400;
+  --fw-medium:     500;
+  --fw-semibold:   600;
+  --fw-bold:       700;
+  --fw-extrabold:  800;
+
+  /* ── Type scale ─────────────────────────────────────────────────────────
+     Minimum sizes enforced via @media override in base.css:
+       desktop ≥ 12px  |  mobile ≥ 14px (--text-xs, --text-sm auto-adjust)
+  ── */
+  --text-xs:   12px;
+  --text-sm:   13px;
+  --text-base: 15px;
+  --text-md:   16px;
+  --text-lg:   clamp(18px, 2vw, 22px);
+  --text-xl:   clamp(22px, 3vw, 32px);
+  --text-2xl:  clamp(28px, 4vw, 44px);
+  --text-3xl:  clamp(32px, 5vw, 56px);
+  --text-4xl:  clamp(40px, 5.5vw, 68px);
+
+  /* ── Spacing scale ──────────────────────────────────── */
+  --space-xs:  8px;
+  --space-sm:  16px;
+  --space-md:  24px;
+  --space-lg:  40px;
+  --space-xl:  64px;
+  --space-2xl: 80px;
+
+  /* ── Radius scale ───────────────────────────────────── */
+  --radius-sm:   6px;
+  --radius-md:   12px;
+  --radius-lg:   20px;
+  --radius-full: 100px;
+  --radius:      var(--radius-md);
+
+  /* ── Easing ─────────────────────────────────────────── */
+  --ease:        0.22s ease;
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --ease-zoom:   cubic-bezier(0, 0, 0.2, 1);
+  --ease-decel:  cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* ── Layout ─────────────────────────────────────────── */
+  --max-w: 1200px;
+
+  /* ── Colours: brand ───────────────────────────────────
+     --ink is the near-black brand surface (hero, dark CTA, footer) —
+     the Budmo equivalent of a "navy" in a portfolio token set.
+     --accent is the blush/rose brand colour. On white it is ~3.0:1,
+     which fails WCAG AA for text — so raw --accent stays background/
+     border-only on light surfaces. Use --accent-text for accent-
+     coloured text on light backgrounds (darkened for AA); on the ink
+     surface the un-darkened --accent already reads at ~5.5:1.       */
+  --white:       #ffffff;
+  --light:       #f5f5f5;
+  --border:      #d9d9d9;
+  --accent:      #d4747f; /* Blush — background/border on light surfaces, ~5.5:1 as text on --ink */
+  --accent-dark: #b8505c; /* Darker blush — hover state on --ink surfaces */
+  --ink:         #1a1a1a; /* Near-black brand surface — hero, dark CTA, footer */
+
+  /* ── Colours: scheme-stable ──────────────────────────────
+     --text-inverse: text/icons on PERMANENTLY dark surfaces
+     (ink hero, footer, filled dark buttons). Always white.
+     --accent-text / --accent-text-hover: accent-coloured TEXT on
+     LIGHT backgrounds — darkened from raw --accent/--accent-dark
+     to clear AA (~4.6:1 on white).                                  */
+  --text-inverse:      #ffffff;
+  --accent-text:       #b8505c;
+  --accent-text-hover: #9c3f4a;
+
+  /* ── Colours: surfaces ──────────────────────────────── */
+  --bg-page:        #ffffff;
+  --bg-surface:     #faf5f6; /* neutral white + faint blush tint */
+  --bg-surface-alt: #f5eaec; /* slightly stronger blush tint */
+  --bg-panel:       #f0dfe2; /* panel-weight blush tint */
+  --bg-card:        #ffffff;
+
+  /* ── Colours: text ──────────────────────────────────── */
+  --text-heading: #1a1a1a;
+  --text-body:    #2a2a2a;
+  --text-muted:   #555555;
+  --text-subtle:  #777777;
+  --text:  var(--text-body);
+  --muted: var(--text-muted);
+
+  /* ── Colours: borders ───────────────────────────────── */
+  --border-subtle: #d9d9d9;
+
+  /* ── Card tokens ─────────────────────────────────────── */
+  --card:        #ffffff;
+  --card-border: #f0dfe2; /* subtle blush tint on card edges */
+  --card-hover:  #faf2f3; /* blush-tinted hover state */
+
+  /* ── Chip tokens ─────────────────────────────────────── */
+  --chip-bg:   #f5e4e6; /* blush-tinted chip background */
+  --chip-text: #1a1a1a;
+
+  /* ── Form tokens ─────────────────────────────────────── */
+  --input-bg:       #f5f5f5;
+  --input-text:     #1a1a1a;
+  --input-border:   #d9d9d9;
+  --input-focus-bg: #ffffff;
+
+  /* ── Status tokens ───────────────────────────────────── */
+  --status-success-bg:     #edf7f2; /* light mint */
+  --status-success-border: #2ea87a; /* medium green */
+  --status-success-text:   #1a6148; /* dark green — 5.6:1 on bg */
+  --status-error-bg:       #fdf0ee; /* light salmon */
+  --status-error-border:   #d94f3d; /* medium red */
+  --status-error-text:     #9e2b1e; /* dark red — 5.4:1 on bg */
+
+  /* ── Header / Footer / Overlay ───────────────────────── */
+  --header-bg:             rgba(255,255,255,0.92);
+  --footer-bg:             #000000;
+  --footer-text:           rgba(255,255,255,0.55);
+  --footer-link:           rgba(255,255,255,0.55);
+  --overlay-dark:          rgba(0,0,0,0.92);
+
+  /* ── Shadows ─────────────────────────────────────────── */
+  --shadow-sm:  0 1px 4px rgba(0, 0, 0, 0.04);
+  --shadow-md:  0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-lg:  0 8px 32px rgba(0, 0, 0, 0.12);
+  --shadow-xl:  0 16px 48px rgba(0, 0, 0, 0.20);
+}
