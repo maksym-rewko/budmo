@@ -13,7 +13,7 @@ import Base from '../layouts/Base.astro';
     <p class="e404-body">The page you were looking for doesn't exist or may have moved. Head back home or get in touch if you'd like to book us.</p>
     <div class="e404-actions">
       <a href="/" class="e404-btn e404-btn--primary">Back to home</a>
-      <a href="/book" class="e404-btn e404-btn--ghost">Book Budmo</a>
+      <button type="button" class="e404-btn e404-btn--ghost" data-book-trigger>Book Budmo</button>
     </div>
   </div>
 </section>
@@ -86,6 +86,7 @@ import Base from '../layouts/Base.astro';
     background: transparent;
     color: rgba(255,255,255,0.70);
     border: 1px solid rgba(255,255,255,0.20);
+    cursor: pointer;
   }
   .e404-btn--ghost:hover {
     color: var(--white);

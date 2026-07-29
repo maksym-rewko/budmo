@@ -26,14 +26,17 @@ const musicGroupSchema = {
 
 <section id="home" class="hero section--slice-bottom">
   <div class="container hero__inner">
-    <h1 class="hero__headline"><span class="hero__accent">Lit</span> Ukrainian Party Band. The People's Choice.</h1>
-    <a href="/book" class="page-cta-btn hero__cta">Book Now</a>
+    <h1 class="hero__headline">
+      <span class="hero__accent">Lit Ukrainian Party Band.</span>
+      <span class="hero__sub">The People's Choice.</span>
+    </h1>
+    <button type="button" class="page-cta-btn hero__cta" data-book-trigger>Book Now</button>
   </div>
 </section>
 
 <section id="about" class="about section--after-slice">
   <div class="container about__inner">
-    <div class="about__text">
+    <div class="about__text reveal" style="--reveal-i:0">
       <span class="section-label">In the beginning</span>
       <h2 class="section-title">About Budmo</h2>
       <div class="about__copy">
@@ -41,7 +44,8 @@ const musicGroupSchema = {
       </div>
     </div>
     <img
-      class="about__map"
+      class="about__map reveal"
+      style="--reveal-i:1"
       src="/optimized/misc/manitoba-map-tinted.webp"
       alt="Map of Manitoba with Winnipeg marked"
       width="220"
@@ -84,17 +88,51 @@ const musicGroupSchema = {
     font-family: var(--font-display);
     font-size: var(--text-4xl);
     color: var(--text-inverse);
-    max-width: 900px;
     line-height: 1.05;
   }
   .hero__accent {
+    display: block;
+    white-space: nowrap;
     color: var(--accent);
-    text-decoration: underline;
-    text-decoration-color: var(--accent);
-    text-underline-offset: 6px;
+    position: relative;
+    /* Same ramp as --text-4xl (clamp(40px,5.5vw,68px)) so it stays in
+       parity with .hero__sub from ~727px up — just with the floor
+       extended down to 18px so it keeps shrinking on narrow phones
+       instead of flooring out at 40px and overflowing. */
+    font-size: clamp(18px, 5.5vw, 68px);
+  }
+  /* Animated underline draws in left-to-right. The 1.6s delay is tuned to
+     Loader.astro's timing (its overlay holds until ~1.4s then fades over
+     0.4s) so this plays as the loader clears rather than underneath it. */
+  .hero__accent::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: heroUnderlineDraw 0.7s var(--ease-decel) 1.6s forwards;
+  }
+  @keyframes heroUnderlineDraw {
+    to { transform: scaleX(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero__accent::after {
+      animation: none;
+      transform: scaleX(1);
+    }
+  }
+  .hero__sub {
+    display: block;
+    margin-top: 0.15em;
   }
   .hero__cta {
     margin-top: 8px;
+    border: none;
+    cursor: pointer;
   }
 
   @media (max-width: 600px) {
@@ -106,7 +144,7 @@ const musicGroupSchema = {
     display: grid;
     grid-template-columns: 1.4fr auto;
     gap: 48px;
-    align-items: start;
+    align-items: center;
   }
   .about__text {
     max-width: 640px;
@@ -122,8 +160,7 @@ const musicGroupSchema = {
   .about__map {
     width: 160px;
     height: auto;
-    justify-self: center;
-    margin-top: 8px;
+    justify-self: end;
   }
 
   @media (max-width: 900px) {
@@ -134,5 +171,9 @@ const musicGroupSchema = {
       order: -1;
       width: 120px;
     }
+  }
+
+  @media (max-width: 600px) {
+    .about__map { display: none; }
   }
 </style>

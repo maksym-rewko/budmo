@@ -46,10 +46,10 @@
 
 <script is:inline>
 (function () {
-  var overlay = document.getElementById('site-loader');
+  let overlay = document.getElementById('site-loader');
   if (!overlay) return;
 
-  var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   function remove() {
     overlay.classList.add('is-hidden');

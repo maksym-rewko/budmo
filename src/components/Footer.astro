@@ -52,7 +52,9 @@ const year = new Date().getFullYear();
 
   .site-footer__copy {
     font-size: var(--text-xs);
-    color:     rgba(255, 255, 255, 0.40);
+    /* 0.4 alpha measured ~3.8:1 on --ink, under the 4.5:1 AA floor;
+       0.5 clears it (~5.2:1) with real margin. */
+    color:     rgba(255, 255, 255, 0.50);
   }
 
   .site-footer__social {

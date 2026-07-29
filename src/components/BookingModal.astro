@@ -1,0 +1,316 @@
+---
+import { eventTypes } from '../data/events';
+---
+<!--
+  This form's markup must stay unconditional static HTML — no client:only,
+  no fetch-loaded partial, no <template> wrapper. Netlify's Forms bot parses
+  the raw HTML in dist/ at deploy time and does not execute JS; a closed
+  native <dialog> (no `open` attribute) is still real, literal HTML — just
+  hidden by the browser's default dialog stylesheet, not by JS injection —
+  so it's detected exactly like the old standalone /book page was.
+-->
+<dialog id="booking-modal" class="booking-modal" aria-labelledby="booking-modal-title">
+  <button type="button" class="booking-modal__close" id="booking-modal-close" aria-label="Close booking form">&times;</button>
+
+  <span class="section-label">Book Budmo</span>
+  <h2 id="booking-modal-title" class="booking-modal__title">Book Budmo for your next event</h2>
+
+  <form
+    class="book__form"
+    id="booking-form"
+    name="booking"
+    method="POST"
+    data-netlify="true"
+    netlify-honeypot="bot-field"
+  >
+    <input type="hidden" name="form-name" value="booking" />
+    <p class="sr-only"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+    <div class="book__row">
+      <div class="book__field">
+        <label for="bf-first-name">First Name</label>
+        <input type="text" id="bf-first-name" name="first-name" autocomplete="given-name" required />
+      </div>
+      <div class="book__field">
+        <label for="bf-last-name">Last Name</label>
+        <input type="text" id="bf-last-name" name="last-name" autocomplete="family-name" required />
+      </div>
+    </div>
+
+    <div class="book__row">
+      <div class="book__field">
+        <label for="bf-email">Email</label>
+        <input type="email" id="bf-email" name="email" autocomplete="email" required />
+      </div>
+      <div class="book__field">
+        <label for="bf-phone">Phone</label>
+        <input type="tel" id="bf-phone" name="phone" autocomplete="tel" placeholder="+1 204 000 0000" required />
+      </div>
+    </div>
+
+    <div class="book__row">
+      <div class="book__field">
+        <label for="bf-event-date">Event Date</label>
+        <input type="date" id="bf-event-date" name="event-date" required />
+      </div>
+      <div class="book__field">
+        <label for="bf-event-type">Event Type</label>
+        <select id="bf-event-type" name="event-type" required>
+          <option value="" disabled selected>Select an option</option>
+          {eventTypes.map(type => <option value={type}>{type}</option>)}
+        </select>
+      </div>
+    </div>
+
+    <div class="book__field">
+      <label for="bf-event-location">Event Location</label>
+      <input type="text" id="bf-event-location" name="event-location" required />
+    </div>
+
+    <div class="book__field">
+      <label for="bf-requests">Requests</label>
+      <textarea id="bf-requests" name="requests" placeholder="Song requests, timeline details, anything else we should know"></textarea>
+    </div>
+
+    <div class="book__status" id="bf-status" role="status" aria-live="polite"></div>
+
+    <button type="submit" class="page-cta-btn book__submit" id="bf-submit">Send</button>
+
+    <p class="book__privacy">We'll only use this to get back to you about your event — never shared with anyone else.</p>
+  </form>
+</dialog>
+
+<style>
+  /* Centering is set explicitly rather than relying on the dialog:modal UA
+     default (position:fixed + inset:0 + margin:auto) — base.css's global
+     `* { margin: 0 }` reset is an author-origin rule, which beats the UA
+     stylesheet's margin:auto regardless of position/specificity, so the
+     centering margin has to be re-declared here to actually take effect. */
+  .booking-modal {
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-xl);
+    background: var(--bg-card);
+    padding: 40px 36px;
+    width: min(720px, 92vw);
+    max-height: min(88vh, 780px);
+    overflow-y: auto;
+    position: fixed;
+    inset: 0;
+    margin: auto;
+  }
+  .booking-modal::backdrop {
+    background: var(--overlay-dark);
+  }
+  .booking-modal[open] {
+    animation: bookingModalIn 0.3s var(--ease-decel);
+  }
+  @keyframes bookingModalIn {
+    from { opacity: 0; transform: scale(0.96); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .booking-modal[open] { animation: none; }
+  }
+
+  .booking-modal__close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 24px;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: background var(--ease), color var(--ease);
+  }
+  .booking-modal__close:hover {
+    background: var(--bg-surface);
+    color: var(--ink);
+  }
+
+  .booking-modal__title {
+    font-size: clamp(24px, 3vw, 34px);
+    color: var(--text-heading);
+    margin-bottom: 24px;
+  }
+
+  .book__form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .book__row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .book__field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .book__field label {
+    font-family: var(--font-display);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .book__field input,
+  .book__field select,
+  .book__field textarea {
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--input-text);
+    background: var(--input-bg);
+    border: 1px solid var(--input-border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    outline: none;
+    width: 100%;
+  }
+  .book__field input:focus,
+  .book__field select:focus,
+  .book__field textarea:focus {
+    background: var(--input-focus-bg);
+    border-color: var(--text-muted);
+  }
+  .book__field textarea {
+    resize: vertical;
+    min-height: 100px;
+  }
+
+  .book__submit {
+    align-self: flex-start;
+    background: var(--ink);
+    color: var(--text-inverse);
+    border: none;
+    cursor: pointer;
+    font-size: var(--text-sm);
+  }
+  .book__submit:hover { opacity: 0.85; }
+  .book__submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+  .book__privacy {
+    font-size: 13px;
+    color: var(--text-muted);
+  }
+
+  .book__status {
+    font-size: 13px;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    display: none;
+    line-height: 1.5;
+  }
+  .book__status--success {
+    display: block;
+    background: var(--status-success-bg);
+    border: 1px solid var(--status-success-border);
+    color: var(--status-success-text);
+  }
+  .book__status--error {
+    display: block;
+    background: var(--status-error-bg);
+    border: 1px solid var(--status-error-border);
+    color: var(--status-error-text);
+  }
+
+  @media (max-width: 700px) {
+    .book__row { grid-template-columns: 1fr; }
+    .booking-modal { padding: 32px 20px; }
+  }
+</style>
+
+<script is:inline>
+document.addEventListener('DOMContentLoaded', function () {
+  let dialog = document.getElementById('booking-modal');
+  let closeBtn = document.getElementById('booking-modal-close');
+  if (!dialog) return;
+
+  let lastFocused = null;
+
+  function openModal(triggerEl) {
+    if (dialog.open) return;
+    lastFocused = triggerEl || document.activeElement;
+    dialog.showModal();
+    document.body.classList.add('modal-open');
+  }
+  // Cleanup lives here directly rather than solely in the 'close' listener
+  // below — some browsers don't fire 'close' synchronously (or at all) for
+  // a close() call issued in the same task, so button/backdrop closes must
+  // not depend on it. The listener stays as a defensive backup for the one
+  // path this function doesn't cover: the browser's native Escape handling.
+  function afterClose() {
+    document.body.classList.remove('modal-open');
+    if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
+  }
+  function closeModal() {
+    if (!dialog.open) return;
+    dialog.close();
+    afterClose();
+  }
+
+  dialog.addEventListener('close', afterClose);
+
+  // Native <dialog> has no backdrop-click-to-close by default — add it manually.
+  dialog.addEventListener('click', function (e) {
+    if (e.target === dialog) closeModal();
+  });
+
+  if (closeBtn) closeBtn.addEventListener('click', closeModal);
+
+  document.querySelectorAll('[data-book-trigger]').forEach(function (el) {
+    el.addEventListener('click', function () {
+      openModal(el);
+    });
+  });
+
+  // Retired /book URL redirects to /#book (see netlify.toml) — auto-open
+  // and then clean the URL so a later reload/back-nav doesn't re-trigger it.
+  if (window.location.hash === '#book') {
+    openModal();
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
+
+  let form   = document.getElementById('booking-form');
+  let status = document.getElementById('bf-status');
+  let submit = document.getElementById('bf-submit');
+  if (!form) return;
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    submit.disabled = true;
+    submit.textContent = 'Sending…';
+    status.className = 'book__status';
+
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(form)).toString(),
+    }).then(function (res) {
+      if (res.ok) {
+        status.textContent = "Success: Request sent — we'll be in touch soon.";
+        status.className = 'book__status book__status--success';
+        form.reset();
+      } else {
+        status.textContent = 'Error: Something went wrong. Please try again.';
+        status.className = 'book__status book__status--error';
+      }
+    }).catch(function () {
+      status.textContent = 'Error: Something went wrong. Please try again.';
+      status.className = 'book__status book__status--error';
+    }).finally(function () {
+      submit.disabled = false;
+      submit.textContent = 'Send';
+    });
+  });
+});
+</script>

@@ -9,20 +9,17 @@ const galleryPhotos = Array.from({ length: 8 }, (_, i) => `/optimized/gallery/ph
     <span class="section-label">Watch &amp; follow</span>
     <h2 class="section-title">Watch us on YouTube&hellip; follow us on Instagram &amp; Facebook</h2>
 
-    <ul class="media__videos">
-      {videos.map(video => (
-        <li class="media__video-facade" data-youtube-id={video.youtubeId}>
-          <img src={video.poster} alt={video.title} loading="lazy" width="1600" height="900" />
+    <ul class="media__gallery" aria-label="Videos and photos from Budmo performances">
+      {videos.map((video, i) => (
+        <li class="media__video-facade reveal" style={`--reveal-i:${i}`} data-youtube-id={video.youtubeId}>
+          <img src={video.poster} alt={video.title} loading="lazy" width="280" height="210" />
           <button type="button" class="media__play" aria-label={`Play: ${video.title}`}>
-            <svg viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path fill="currentColor" d="M8 5v14l11-7z"/></svg>
           </button>
         </li>
       ))}
-    </ul>
-
-    <ul class="media__gallery" aria-label="Photos from Budmo performances">
       {galleryPhotos.map((photo, i) => (
-        <li>
+        <li class="reveal" style={`--reveal-i:${videos.length + i}`}>
           <img
             src={photo}
             srcset={srcset800(photo)}
@@ -37,63 +34,26 @@ const galleryPhotos = Array.from({ length: 8 }, (_, i) => `/optimized/gallery/ph
     </ul>
 
     <nav class="media__social" aria-label="Social links">
-      <a href={socialLinks.youtube} target="_blank" rel="noopener" class="media__social-link">YouTube</a>
-      <a href={socialLinks.instagram} target="_blank" rel="noopener" class="media__social-link">Instagram</a>
-      <a href={socialLinks.facebook} target="_blank" rel="noopener" class="media__social-link">Facebook</a>
+      <a href={socialLinks.youtube} target="_blank" rel="noopener" class="media__social-link">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+        YouTube
+      </a>
+      <a href={socialLinks.instagram} target="_blank" rel="noopener" class="media__social-link">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M12 2.16c3.2 0 3.58.01 4.85.07 1.17.05 1.8.25 2.23.41.56.22.96.48 1.38.9.42.42.68.82.9 1.38.16.42.36 1.06.41 2.23.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.25 1.8-.41 2.23-.22.56-.48.96-.9 1.38-.42.42-.82.68-1.38.9-.42.16-1.06.36-2.23.41-1.27.06-1.64.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.8-.25-2.23-.41-.56-.22-.96-.48-1.38-.9-.42-.42-.68-.82-.9-1.38-.16-.42-.36-1.06-.41-2.23-.06-1.27-.07-1.65-.07-4.85s.01-3.58.07-4.85c.05-1.17.25-1.8.41-2.23.22-.56.48-.96.9-1.38.42-.42.82-.68 1.38-.9.42-.16 1.06-.36 2.23-.41 1.27-.06 1.65-.07 4.85-.07M12 0C8.74 0 8.33.01 7.05.07 5.78.13 4.9.33 4.14.63c-.79.31-1.46.72-2.13 1.38C1.35 2.68.94 3.35.63 4.14.33 4.9.13 5.78.07 7.05.01 8.33 0 8.74 0 12s.01 3.67.07 4.95c.06 1.27.26 2.15.56 2.91.31.79.72 1.46 1.38 2.13.67.66 1.34 1.07 2.13 1.38.76.3 1.64.5 2.91.56C8.33 23.99 8.74 24 12 24s3.67-.01 4.95-.07c1.27-.06 2.15-.26 2.91-.56.79-.31 1.46-.72 2.13-1.38.66-.67 1.07-1.34 1.38-2.13.3-.76.5-1.64.56-2.91.06-1.28.07-1.69.07-4.95s-.01-3.67-.07-4.95c-.06-1.27-.26-2.15-.56-2.91a5.87 5.87 0 0 0-1.38-2.13A5.87 5.87 0 0 0 19.86.63c-.76-.3-1.64-.5-2.91-.56C15.67.01 15.26 0 12 0zm0 5.84a6.16 6.16 0 1 0 0 12.32 6.16 6.16 0 0 0 0-12.32zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.41-10.85a1.44 1.44 0 1 0 0 2.88 1.44 1.44 0 0 0 0-2.88z"/></svg>
+        Instagram
+      </a>
+      <a href={socialLinks.facebook} target="_blank" rel="noopener" class="media__social-link">
+        <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M22.68 0H1.33C.59 0 0 .59 0 1.32v21.35c0 .73.59 1.32 1.33 1.32h11.49v-9.29H9.69V11.1h3.13V8.43c0-3.1 1.89-4.79 4.66-4.79 1.32 0 2.46.1 2.79.14v3.24h-1.92c-1.5 0-1.8.72-1.8 1.76v2.31h3.59l-.47 3.62h-3.12V24h6.12c.73 0 1.32-.59 1.32-1.32V1.32C24 .59 23.41 0 22.68 0z"/></svg>
+        Facebook
+      </a>
     </nav>
   </div>
 </section>
 
 <style>
-  .media__videos {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-    list-style: none;
-    margin-bottom: 40px;
-  }
-
-  .media__video-facade {
-    position: relative;
-    aspect-ratio: 16 / 9;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    background: var(--ink);
-  }
-  .media__video-facade img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .media__video-facade iframe {
-    width: 100%;
-    height: 100%;
-    border: 0;
-    display: block;
-  }
-
-  .media__play {
-    position: absolute;
-    inset: 0;
-    margin: auto;
-    width: 64px;
-    height: 64px;
-    border-radius: 50%;
-    background: rgba(26, 26, 26, 0.75);
-    color: var(--text-inverse);
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: background var(--ease), transform var(--ease);
-  }
-  .media__play:hover {
-    background: var(--accent-dark);
-    transform: scale(1.06);
-  }
-
-  /* Horizontal scroll-snap strip, contained within the page margins. */
+  /* Horizontal scroll-snap strip, contained within the page margins.
+     Video facades share the same card size as the photos so they sit
+     in the same strip as the first two cards. */
   .media__gallery {
     display: flex;
     gap: 16px;
@@ -114,11 +74,48 @@ const galleryPhotos = Array.from({ length: 8 }, (_, i) => `/optimized/gallery/ph
     border-radius: var(--radius-md);
   }
 
+  .media__video-facade {
+    position: relative;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--ink);
+  }
+  .media__video-facade iframe {
+    width: 280px;
+    height: 210px;
+    border: 0;
+    display: block;
+  }
+
+  .media__play {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: rgba(26, 26, 26, 0.75);
+    color: var(--text-inverse);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--ease), transform var(--ease);
+  }
+  .media__play:hover {
+    background: var(--accent-dark);
+    transform: scale(1.06);
+  }
+
   .media__social {
     display: flex;
     gap: 28px;
   }
   .media__social-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-family: var(--font-display);
     font-size: var(--text-md);
     letter-spacing: 0.04em;
@@ -126,20 +123,16 @@ const galleryPhotos = Array.from({ length: 8 }, (_, i) => `/optimized/gallery/ph
     transition: color var(--ease);
   }
   .media__social-link:hover { color: var(--accent-text); }
-
-  @media (max-width: 700px) {
-    .media__videos { grid-template-columns: 1fr; }
-  }
 </style>
 
 <script is:inline>
 (function () {
   document.querySelectorAll('.media__video-facade').forEach(function (facade) {
-    var button = facade.querySelector('.media__play');
+    let button = facade.querySelector('.media__play');
     if (!button) return;
     button.addEventListener('click', function () {
-      var id = facade.getAttribute('data-youtube-id');
-      var iframe = document.createElement('iframe');
+      let id = facade.getAttribute('data-youtube-id');
+      let iframe = document.createElement('iframe');
       iframe.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1';
       iframe.title = 'YouTube video player';
       iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';

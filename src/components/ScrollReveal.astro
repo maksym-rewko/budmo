@@ -1,0 +1,32 @@
+<script is:inline>
+(function () {
+  let els = document.querySelectorAll('.reveal');
+  if (!els.length) return;
+
+  let reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function revealAll() {
+    els.forEach(function (el) { el.classList.add('is-visible'); });
+  }
+
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    revealAll();
+    return;
+  }
+
+  let observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+
+  els.forEach(function (el) { observer.observe(el); });
+
+  // Safety net: never let a broken observer leave content permanently
+  // invisible — unlike Loader's overlay, a stuck .reveal element fails
+  // silently (no error, content just never appears).
+  setTimeout(revealAll, 3000);
+})();
+</script>

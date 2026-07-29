@@ -160,9 +160,9 @@ import { site } from '../data/site';
 
 <script is:inline>
 (function () {
-  var form   = document.getElementById('contact-form');
-  var status = document.getElementById('cf-status');
-  var submit = document.getElementById('cf-submit');
+  let form   = document.getElementById('contact-form');
+  let status = document.getElementById('cf-status');
+  let submit = document.getElementById('cf-submit');
   if (!form) return;
 
   form.addEventListener('submit', function (e) {

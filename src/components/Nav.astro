@@ -9,10 +9,6 @@ const links = [
 
 <header class="site-nav">
   <div class="container site-nav__inner">
-    <a href="/" class="site-nav__logo" aria-label="Budmo — home">
-      <img src="/optimized/logo/wordmark-black.webp" alt="Budmo" width="120" height="59" />
-    </a>
-
     <nav class="site-nav__links" aria-label="Site navigation">
       <a href="/">Home</a>
       {links.map(link => (
@@ -20,7 +16,7 @@ const links = [
       ))}
     </nav>
 
-    <a href="/book" class="site-nav__book">Book</a>
+    <button type="button" class="site-nav__book" data-book-trigger>Book</button>
   </div>
 </header>
 
@@ -35,26 +31,25 @@ const links = [
     border-bottom: 1px solid var(--border-subtle);
   }
 
+  /* Empty column 1 is a deliberate counterweight — with no logo on the
+     left, it's what lets column 2 sit at the bar's true geometric center
+     regardless of the Book pill's width in column 3. */
   .site-nav__inner {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
     align-items: center;
     gap: 32px;
     padding-top: 14px;
     padding-bottom: 14px;
   }
 
-  .site-nav__logo img {
-    height: 32px;
-    width: auto;
-  }
-
   .site-nav__links {
+    grid-column: 2;
     display: flex;
     align-items: center;
     gap: 28px;
-    margin-left: auto;
     font-family: var(--font-display);
-    font-size: var(--text-sm);
+    font-size: var(--text-md);
     letter-spacing: 0.04em;
   }
   .site-nav__links a {
@@ -64,14 +59,17 @@ const links = [
   .site-nav__links a:hover { color: var(--accent-text); }
 
   .site-nav__book {
+    grid-column: 3;
+    justify-self: end;
     font-family: var(--font-display);
-    font-size: var(--text-sm);
+    font-size: var(--text-md);
     letter-spacing: 0.04em;
     background: var(--white);
     color: var(--ink);
     border: 1px solid var(--ink);
     padding: 8px 22px;
     border-radius: var(--radius-full);
+    cursor: pointer;
     transition: background var(--ease), color var(--ease);
   }
   .site-nav__book:hover {
@@ -80,10 +78,14 @@ const links = [
   }
 
   /* ── Mobile: single-page scroll site, so the anchor links just add
-     noise — visitors scroll instead of jumping via nav. Logo + Book
-     CTA are enough. Desktop nav treatment is being revisited separately. ── */
+     noise — visitors scroll instead of jumping via nav. With no logo to
+     balance the bar, Book sits centered alone rather than pinned right. ── */
   @media (max-width: 900px) {
     .site-nav__links { display: none; }
-    .site-nav__book { margin-left: auto; }
+    .site-nav__inner {
+      display: flex;
+      justify-content: center;
+    }
+    .site-nav__book { justify-self: unset; }
   }
 </style>

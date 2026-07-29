@@ -4,6 +4,8 @@ import '../styles/base.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Loader from '../components/Loader.astro';
+import BookingModal from '../components/BookingModal.astro';
+import ScrollReveal from '../components/ScrollReveal.astro';
 import { site } from '../data/site';
 
 interface Props {
@@ -58,18 +60,16 @@ const canonicalUrl = canonical ?? `${site.canonical}${Astro.url.pathname}`;
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&display=swap" as="style" />
-  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Sora:wght@400;500;600&display=swap" as="style" />
+  <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Sora:wght@400;500;600&display=swap" rel="stylesheet" />
   <link rel="preload" href="/fonts/MistralStd.otf" as="font" type="font/otf" crossorigin />
 
-  {/* TODO: replace G-XXXXXXXXXX with the real Measurement ID once the GA4 property
-      exists (create one at https://analytics.google.com) */}
-  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script is:inline async src="https://www.googletagmanager.com/gtag/js?id=G-DVKR4EEG80"></script>
   <script is:inline>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-    gtag('config', 'G-XXXXXXXXXX');
+    gtag('config', 'G-DVKR4EEG80');
   </script>
 
   <style>
@@ -89,6 +89,14 @@ const canonicalUrl = canonical ?? `${site.canonical}${Astro.url.pathname}`;
     }
     .skip-nav:focus { top: 0; }
   </style>
+
+  {/* .reveal starts at opacity:0 and depends on ScrollReveal.astro's script
+      to reveal it (IntersectionObserver, or its 3s safety timeout). With JS
+      disabled entirely neither ever runs, so this is the last-resort
+      CSS-only fallback that keeps content from staying invisible forever. */}
+  <noscript>
+    <style>.reveal { opacity: 1 !important; transform: none !important; }</style>
+  </noscript>
 </head>
 <body>
 
@@ -99,5 +107,7 @@ const canonicalUrl = canonical ?? `${site.canonical}${Astro.url.pathname}`;
     <slot />
   </main>
   <Footer />
+  <BookingModal />
+  <ScrollReveal />
 </body>
 </html>

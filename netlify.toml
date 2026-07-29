@@ -38,3 +38,8 @@
   from = "/404-error"
   to = "/404"
   status = 301
+
+[[redirects]]
+  from = "/book"
+  to = "/#book"
+  status = 301

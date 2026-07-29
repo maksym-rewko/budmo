@@ -2,8 +2,8 @@
 
 :root {
   /* ── Font families ──────────────────────────────────── */
-  --font-display: 'Bebas Neue', sans-serif;
-  --font-body:    'Poppins', sans-serif;
+  --font-display: 'Archivo Black', sans-serif;
+  --font-body:    'Sora', sans-serif;
   --font-script:  'Mistral', cursive;
 
   /* ── Font weights ───────────────────────────────────── */
@@ -71,9 +71,12 @@
      (ink hero, footer, filled dark buttons). Always white.
      --accent-text / --accent-text-hover: accent-coloured TEXT on
      LIGHT backgrounds — darkened from raw --accent/--accent-dark
-     to clear AA (~4.6:1 on white).                                  */
+     to clear AA (~4.9:1 on --bg-surface, the darker of the two
+     light surfaces this token is actually used on — an earlier
+     shade cleared white but measured only 4.48:1 on --bg-surface,
+     just under the 4.5:1 AA floor for normal text).                */
   --text-inverse:      #ffffff;
-  --accent-text:       #b8505c;
+  --accent-text:       #af4a56;
   --accent-text-hover: #9c3f4a;
 
   /* ── Colours: surfaces ──────────────────────────────── */

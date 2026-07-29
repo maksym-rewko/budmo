@@ -1,6 +1,11 @@
 ---
 import { bandMembers } from '../data/band';
 import { srcset800 } from '../lib/responsive';
+
+function splitName(name: string) {
+  const [first, ...rest] = name.split(' ');
+  return { first, last: rest.join(' ') };
+}
 ---
 <section id="theband" class="band section--surface">
   <div class="container">
@@ -12,21 +17,24 @@ import { srcset800 } from '../lib/responsive';
     </p>
 
     <ul class="band__grid">
-      {bandMembers.map(member => (
-        <li class="band__card">
-          <img
-            src={member.photo}
-            srcset={srcset800(member.photo)}
-            sizes="(max-width: 600px) 45vw, 220px"
-            alt={member.alt}
-            width="220"
-            height="330"
-            loading="lazy"
-          />
-          <h3 class="band__name">{member.name}</h3>
-          <p class="band__instrument">{member.instrument}</p>
-        </li>
-      ))}
+      {bandMembers.map((member, i) => {
+        const { first, last } = splitName(member.name);
+        return (
+          <li class="band__card reveal" style={`--reveal-i:${i}`}>
+            <img
+              src={member.photo}
+              srcset={srcset800(member.photo)}
+              sizes="(max-width: 600px) 45vw, 220px"
+              alt={member.alt}
+              width="220"
+              height="330"
+              loading="lazy"
+            />
+            <h3 class="band__name">{first}<br />{last}</h3>
+            <p class="band__instrument">{member.instrument}</p>
+          </li>
+        );
+      })}
     </ul>
   </div>
 </section>
